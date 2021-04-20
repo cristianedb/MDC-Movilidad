@@ -5,9 +5,15 @@
 ######################################################
 
 source("movility_df.R")
+source("covid_df.R")
 
+country='Argentina'
 city = "Buenos Aires"
 trans = "walking"
 
 #Obtiene dataframe de movilidad
-movilidad<-get_movility_df(city,trans)
+movilidad<-get_movility_df(country,trans)
+
+#Obtiene dataframe de COVID death
+COVID_19_h<-get_covid_death_df(country)
+
