@@ -15,5 +15,8 @@ trans = "walking"
 movilidad<-get_movility_df(country,trans)
 
 #Obtiene dataframe de COVID death
-COVID_19_h<-get_covid_death_df(country)
+COVID_19<-get_covid_death_per_day()
 
+#Unir los dos dataframes, se usa la fecha como Key (tienen el mismo nombre)
+
+final<- merge(movilidad, COVID_19)

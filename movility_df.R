@@ -5,6 +5,7 @@
 
 # Carga la funcion para leer desde Iphone
 source("movility_data_raw.R")
+library(tidyr)
 
 get_movility_df <- function(city,trans_type) {
   # Obtiene datos desde la pagina de Iphone
@@ -16,12 +17,13 @@ get_movility_df <- function(city,trans_type) {
   mobility$transportation_type   <- as.factor(mobility$transportation_type)
   
   #Modifica la estructura de la tabla 
-  mobility <- pivot_longer(mobility,starts_with('X20'),names_to='myday',values_to='val')
-  mobility$myday <- as.Date(mobility$myday, format = "X%Y.%m.%d")
-  
+  mobility <- pivot_longer(mobility,starts_with('X20'),names_to='FECHA',values_to='MOVILIDAD')
+  mobility$FECHA <- as.Date(mobility$FECHA, format = "X%Y.%m.%d")
+
   #Filtra los datos necesarios
   mobility <- subset(mobility, region == city & transportation_type == trans_type)
-  mobility <-subset(mobility,select=c(myday,val))
+  mobility <-subset(mobility,select=c(FECHA,MOVILIDAD))
+  
   return(mobility) 
 }
 

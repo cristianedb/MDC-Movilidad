@@ -6,9 +6,10 @@
 get_movility_data <- function(reintento=0) {
   out <- tryCatch(
     {
-      url_base='https://covid19-static.cdn-apple.com/covid19-mobility-data/2106HotfixDev13/v3/en-us/applemobilitytrends-'
-      
-      yesterday<-Sys.Date()-1-reintento
+      last_version=20+reintento
+      url_base=paste('https://covid19-static.cdn-apple.com/covid19-mobility-data/2106HotfixDev',last_version,'/v3/en-us/applemobilitytrends-', sep = "")
+
+      yesterday<-Sys.Date()-2
       url_day<-paste(url_base,yesterday,'.csv',sep="")
       message(url_day)
       read.csv(url_day, sep = ",", header = T)
@@ -21,9 +22,10 @@ get_movility_data <- function(reintento=0) {
     warning=function(cond) {
       message("Warning")
       message(cond)
-      if(reintento==0) {
-        message("Se produjo un error se probará con un día anterior")
-        get_movility_data(1)
+      if(reintento<10) {
+        reintento=reintento+1
+        message(paste("VERSION DE IPHONE DESACTUALIZADA ",last_version))
+        get_movility_data(reintento)
       }
       else{
         return(NULL)

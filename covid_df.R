@@ -1,17 +1,35 @@
 
-get_covid_death_df <- function(country) {
-  URL <- "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/"
-  url_archivo  <- paste(URL,"time_series_covid19_deaths_global.csv", sep = "")
-  COVID_19_h  <- read.csv(url_archivo, sep = ",", header = T)
+get_covid_death_per_day <- function() {
+  URL <- "https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/reporte-covid/"
+  url_archivo  <- paste(URL,"dataset_reporte_covid_sitio_gobierno.csv", sep = "")
+
+  library(readr)
+  COVID_19 <- read_csv(url_archivo, col_types = cols(FECHA = col_datetime(format = "%d%b%Y:%H:%M:%S")), 
+                       locale = locale(tz="America/Argentina/Buenos_Aires"))
   
-  COVID_19_h <- pivot_longer(COVID_19_h,starts_with('X'),names_to='myday',values_to='val')
-  COVID_19_h$myday <- as.Date(as.character(COVID_19_h$myday), format = "X%m.%d.%y")
+  #Se exploran columnas
+  #colnames(COVID_19)
+
+  #se observa los datos en las columnas de interes
+  # levels(COVID_19$SUBTIPO_DATO)}
+  # [57] "fallecidos_acumulados"                                      
+  # [58] "fallecidos_reportados_del_dia"  
   
-  #Filtra los datos necesarios
-  COVID_19_h <- subset(COVID_19_h, Country.Region == country)
-  COVID_19_h <-subset(COVID_19_h,select=c(myday,val))
+  # COL DE INTERES: "ï..FECHA","TIPO_DATO","SUBTIPO_DATO","VALOR"         
+  # COL A BORRAR: "FECHA_PROCESO","ID_CARGA","TIPO_REPORTE"
+  library("dplyr")
   
-  return(COVID_19_h)
+  COVID_19<-filter(COVID_19, SUBTIPO_DATO=="fallecidos_reportados_del_dia")
+  levels(COVID_19$TIPO_DATO)
+  
+  #Selecciona las columnas a trabajar
+  COVID_19 <-select(COVID_19,FECHA,VALOR )
+  colnames(COVID_19) <- c("FECHA", "MUERTES_POR_DIA")
+  COVID_19<- COVID_19 %>% group_by(FECHA) %>% summarise(MUERTES_POR_DIA = sum(MUERTES_POR_DIA))
+  COVID_19$FECHA <- as.Date(COVID_19$FECHA, format = "%d.%m.%Y")
+
+  return(COVID_19)
 }
+
 
 
