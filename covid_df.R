@@ -1,3 +1,8 @@
+# COMPARA DATOS DE MOVILIDAD CON LAS MUERTES POR COVID EN 
+# LA CIUDAD DE BUENOS AIRES
+# 2021-04-19  version actual:   2021-04-19 
+# GRUPO:  
+######################################################
 
 get_covid_death_per_day <- function() {
   URL <- "https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/reporte-covid/"

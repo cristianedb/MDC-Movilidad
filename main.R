@@ -6,6 +6,7 @@
 
 source("movility_df.R")
 source("covid_df.R")
+source("grafica.R")
 
 country='Argentina'
 city = "Buenos Aires"
@@ -18,5 +19,7 @@ movilidad<-get_movility_df(country,trans)
 COVID_19<-get_covid_death_per_day()
 
 #Unir los dos dataframes, se usa la fecha como Key (tienen el mismo nombre)
-
 final<- merge(movilidad, COVID_19)
+
+#grafica
+graficar(final)
