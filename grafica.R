@@ -1,33 +1,13 @@
-# COMPARA DATOS DE MOVILIDAD CON LAS MUERTES POR COVID EN 
-# LA CIUDAD DE BUENOS AIRES
+#
+# REALIZA LAS GRAFICAS ENTRE LAS MUERTES Y LA MOVILIDAD
+#
 # 2021-04-19  version actual:   2021-04-19 
 # GRUPO:  
-######################################################
+################################################################################
 
 library(ggplot2)
 library(patchwork)
 library(plotly)
-
-# graficar2<-function(final){
-#   coeff <- 1.5
-#   g1<-ggplot(final, aes(x=FECHA)) +
-#     geom_line( aes(y=MOVILIDAD), size=1,color="blue") +
-#     geom_line( aes(y=MUERTES_POR_DIA/coeff), size=1,color="red")+
-#     ggtitle("COVID_19 - Movilidad vs muertes diarias") +
-#     scale_x_date(name = "",date_breaks = "15 day", date_labels =  "%d %b") +
-#     theme(axis.text.x = element_text(angle = 45, hjust = 1,face ='bold')) +
-#     scale_y_continuous(
-#       # Features of the first axis
-#       name = "Movilidad",
-#       # Add a second axis and specify its features
-#       sec.axis = sec_axis(~.*coeff, name="Muertes por día"),
-#       limits=c(0,100)
-#     )
-#   
-#   fig <- ggplotly(g1)
-#   
-#   fig  
-# }
 
 graficar <- function(final){
   ay <- list(

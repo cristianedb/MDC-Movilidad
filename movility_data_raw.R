@@ -6,7 +6,7 @@
 get_movility_data <- function(reintento=0) {
   out <- tryCatch(
     {
-      last_version=22+reintento
+      last_version=28+reintento
       url_base=paste('https://covid19-static.cdn-apple.com/covid19-mobility-data/2106HotfixDev',last_version,'/v3/en-us/applemobilitytrends-', sep = "")
 
       yesterday<-Sys.Date()-2

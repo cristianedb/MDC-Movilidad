@@ -1,5 +1,6 @@
-# COMPARA DATOS DE MOVILIDAD CON LAS MUERTES POR COVID EN 
-# LA CIUDAD DE BUENOS AIRES
+#
+# PROCESA DATAFRAME DE MUERTES EN LA CIUDAD DE BUENOS AIRES
+#
 # 2021-04-19  version actual:   2021-04-19 
 # GRUPO:  
 ######################################################

@@ -1,7 +1,9 @@
-# PROCESA EL CSV OBTENIDO DESDE LA PAGINA DE MOVILIDAD
+#
+# PROCESA EL DATAFRAME DE MOVILIDAD OBTENIDO DESDE APPLE
+#
 # 2021-04-19  version actual:   2021-04-19 
 # GRUPO:  
-######################################################
+################################################################################
 
 # Carga la funcion para leer desde Iphone
 source("movility_data_raw.R")
@@ -26,6 +28,10 @@ get_movility_df <- function(city,trans_type) {
   
   return(mobility) 
 }
+
+
+#Obtiene dataframe de movilidad
+movilidad<-get_movility_df(country,city,trans)
 
 
 
