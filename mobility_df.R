@@ -6,12 +6,12 @@
 ################################################################################
 
 # Carga la funcion para leer desde Iphone
-source("movility_data_raw.R")
+source("mobility_data_raw.R")
 library(tidyr)
 
-get_movility_df <- function(city,trans_type) {
+get_mobility_df <- function(city,trans_type) {
   # Obtiene datos desde la pagina de Iphone
-  mobility<-get_movility_data()
+  mobility<-get_mobility_data()
   
   #Le da un tipo a las columnas
   mobility$geo_type              <- as.factor(mobility$geo_type)
@@ -28,10 +28,6 @@ get_movility_df <- function(city,trans_type) {
   
   return(mobility) 
 }
-
-
-#Obtiene dataframe de movilidad
-movilidad<-get_movility_df(country,city,trans)
 
 
 

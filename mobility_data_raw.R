@@ -3,13 +3,17 @@
 # GRUPO:  
 ######################################################
 
-get_movility_data <- function(reintento=0) {
+get_mobility_data <- function(reintento=0) {
   out <- tryCatch(
     {
-      last_version=28+reintento
-      url_base=paste('https://covid19-static.cdn-apple.com/covid19-mobility-data/2106HotfixDev',last_version,'/v3/en-us/applemobilitytrends-', sep = "")
+      last_version=9+reintento
+      #old link
+      #url_base=paste('https://covid19-static.cdn-apple.com/covid19-mobility-data/2106HotfixDev',last_version,'/v3/en-us/applemobilitytrends-', sep = "")
 
-      yesterday<-Sys.Date()-2
+      #TODO: revisar la pagina y bajarse la url https://covid19.apple.com/mobility
+      
+      url_base=paste('https://covid19-static.cdn-apple.com/covid19-mobility-data/2107HotfixDev',last_version,'/v3/en-us/applemobilitytrends-', sep = "")
+      yesterday<-Sys.Date()-1 # Este se fija si es el dia anterior
       url_day<-paste(url_base,yesterday,'.csv',sep="")
       message(url_day)
       read.csv(url_day, sep = ",", header = T)
@@ -34,3 +38,4 @@ get_movility_data <- function(reintento=0) {
   )    
   return(out)
 }
+

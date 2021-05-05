@@ -6,7 +6,7 @@
 ################################################################################
 
 source("check_packages.R")
-source("movility_df.R")
+source("mobility_df.R")
 source("covid_df.R")
 source("grafica.R")
 
@@ -17,7 +17,7 @@ city = "Buenos Aires"
 trans = "walking"
 
 #Obtiene dataframe de movilidad
-movilidad<-get_movility_df(city,trans)
+movilidad<-get_mobility_df(city,trans)
 
 #Obtiene dataframe de COVID death
 COVID_19<-get_covid_death_per_day()
