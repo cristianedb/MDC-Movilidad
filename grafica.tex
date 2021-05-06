@@ -105,13 +105,25 @@
 
 \title{grafica.R}
 \author{u500246}
-\date{2021-04-28}
+\date{2021-05-06}
 
 \begin{document}
 \maketitle
 
 \begin{Shaded}
 \begin{Highlighting}[]
+\CommentTok{\#}
+\CommentTok{\# REALIZA LAS GRAFICAS ENTRE LAS MUERTES Y LA MOVILIDAD}
+\CommentTok{\#}
+\CommentTok{\# 2021{-}04{-}19  version actual:   2021{-}04{-}19 }
+\CommentTok{\# GRUPO:  }
+\CommentTok{\#       Cristian Veiga}
+\CommentTok{\#       Cristian De Blasis}
+\CommentTok{\#       Gabriel Guiño}
+\CommentTok{\#       Guillermo Millich}
+\CommentTok{\#       Nicolas Gentile}
+\DocumentationTok{\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#}
+
 \FunctionTok{library}\NormalTok{(ggplot2)}
 \end{Highlighting}
 \end{Shaded}
@@ -165,27 +177,6 @@
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# graficar2\textless{}{-}function(final)\{}
-\CommentTok{\#   coeff \textless{}{-} 1.5}
-\CommentTok{\#   g1\textless{}{-}ggplot(final, aes(x=FECHA)) +}
-\CommentTok{\#     geom\_line( aes(y=MOVILIDAD), size=1,color="blue") +}
-\CommentTok{\#     geom\_line( aes(y=MUERTES\_POR\_DIA/coeff), size=1,color="red")+}
-\CommentTok{\#     ggtitle("COVID\_19 {-} Movilidad vs muertes diarias") +}
-\CommentTok{\#     scale\_x\_date(name = "",date\_breaks = "15 day", date\_labels =  "\%d \%b") +}
-\CommentTok{\#     theme(axis.text.x = element\_text(angle = 45, hjust = 1,face =\textquotesingle{}bold\textquotesingle{})) +}
-\CommentTok{\#     scale\_y\_continuous(}
-\CommentTok{\#       \# Features of the first axis}
-\CommentTok{\#       name = "Movilidad",}
-\CommentTok{\#       \# Add a second axis and specify its features}
-\CommentTok{\#       sec.axis = sec\_axis(\textasciitilde{}.*coeff, name="Muertes por día"),}
-\CommentTok{\#       limits=c(0,100)}
-\CommentTok{\#     )}
-\CommentTok{\#   }
-\CommentTok{\#   fig \textless{}{-} ggplotly(g1)}
-\CommentTok{\#   }
-\CommentTok{\#   fig  }
-\CommentTok{\# \}}
-
 \NormalTok{graficar }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(final)\{}
 \NormalTok{  ay }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(}
     \AttributeTok{side =} \StringTok{"left"}\NormalTok{,}

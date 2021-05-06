@@ -3,6 +3,11 @@
 #
 # 2021-04-19  version actual:   2021-04-19 
 # GRUPO:  
+#       Cristian Veiga
+#       Cristian De Blasis
+#       Gabriel Guiño
+#       Guillermo Millich
+#       Nicolas Gentile
 ################################################################################
 
 # Carga la funcion para leer desde Iphone

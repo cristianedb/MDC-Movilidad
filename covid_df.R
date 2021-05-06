@@ -3,6 +3,11 @@
 #
 # 2021-04-19  version actual:   2021-04-19 
 # GRUPO:  
+#       Cristian Veiga
+#       Cristian De Blasis
+#       Gabriel Guiño
+#       Guillermo Millich
+#       Nicolas Gentile
 ######################################################
 
 get_covid_death_per_day <- function() {
