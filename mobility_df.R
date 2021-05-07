@@ -14,9 +14,9 @@
 source("mobility_data_raw.R")
 library(tidyr)
 
-get_mobility_df <- function(city,trans_type) {
+get_mobility_df <- function(city,trans_type,url_type) {
   # Obtiene datos desde la pagina de Iphone
-  mobility<-get_mobility_data()
+  mobility<-get_mobility_data(url_type)
   
   #Le da un tipo a las columnas
   mobility$geo_type              <- as.factor(mobility$geo_type)

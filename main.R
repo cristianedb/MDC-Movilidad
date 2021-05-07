@@ -22,7 +22,9 @@ city = "Buenos Aires"
 trans = "walking"
 
 #Obtiene dataframe de movilidad
-movilidad<-get_mobility_df(city,trans)
+# 'dynamic' lo toma desde la pagina
+# 'manual' lo toma desde el archivo en el raiz con nombre "applemobilitytrends.csv"
+movilidad<-get_mobility_df(city,trans,'dynamic') 
 
 #Obtiene dataframe de COVID death
 COVID_19<-get_covid_death_per_day()
@@ -32,3 +34,5 @@ final<- merge(movilidad, COVID_19)
 
 #grafica
 graficar(final)
+
+

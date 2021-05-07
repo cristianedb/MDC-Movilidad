@@ -182,29 +182,37 @@ pre code {
 #       Nicolas Gentile
 ######################################################
 
-get_mobility_data &lt;- function(reintento=0) {
+get_mobility_data &lt;- function(type=&#39;dynamic&#39;,reintento=0) {
   out &lt;- tryCatch(
     { REINTENTOS_MAX=10
-      if(reintento&lt;REINTENTOS_MAX){
-        # Reintenta varias veces probando una version diferente en el caso 
-        # de no encontrarla en los primeros 10 intentos utiliza otro metodo
-        last_version=9+reintento
-        url_base=paste(&#39;https://covid19-static.cdn-apple.com/covid19-mobility-data/2107HotfixDev&#39;,last_version,&#39;/v3/en-us/applemobilitytrends-&#39;, sep = &quot;&quot;)
-        yesterday&lt;-Sys.Date()-2 # Este se fija si es el dia anterior
-        url_day&lt;-paste(url_base,yesterday,&#39;.csv&#39;,sep=&quot;&quot;)
+      if(type==&#39;dynamic&#39;){
+        # Se toman los datos de la red
+        if(reintento&lt;REINTENTOS_MAX){
+          # Reintenta varias veces probando una version diferente en el caso 
+          # de no encontrarla en los primeros 10 intentos utiliza otro metodo
+          last_version=9+reintento
+          url_base=paste(&#39;https://covid19-static.cdn-apple.com/covid19-mobility-data/2107HotfixDev&#39;,last_version,&#39;/v3/en-us/applemobilitytrends-&#39;, sep = &quot;&quot;)
+          yesterday&lt;-Sys.Date()-2 # Este se fija si es el dia anterior
+          url_day&lt;-paste(url_base,yesterday,&#39;.csv&#39;,sep=&quot;&quot;)
+        }
+        else{
+          # Debido a que la pagina de Apple tiene contenido dinámico se utilizó
+          # Rselenium para poder scrappearla y obtener la url necesaria para 
+          # dicho proposito
+          message(&quot;SE UTILIZARA OTRO METODO PARA OBTENER LA URL &quot;)
+          message(&quot;*************************************************************&quot;)
+          message(&quot;*IMPORTANTE!!:                                              *&quot;)
+          message(&quot;*              SE UTILIZARA OTRO METODO PARA OBTENER LA URL *&quot;)
+          message(&quot;               SE ABRIRA FIREFOX, POR FAVOR NO LO CIERRE    *&quot;)
+          message(&quot;*************************************************************&quot;)
+          url_day&lt;-get_url()
+        }
       }
       else{
-        # Debido a que la pagina de Apple tiene contenido dinámico se utilizó
-        # Rselenium para poder scrappearla y obtener la url necesaria para 
-        # dicho proposito
-        message(&quot;SE UTILIZARA OTRO METODO PARA OBTENER LA URL &quot;)
-        message(&quot;*************************************************************&quot;)
-        message(&quot;*IMPORTANTE!!:                                              *&quot;)
-        message(&quot;*              SE UTILIZARA OTRO METODO PARA OBTENER LA URL *&quot;)
-        message(&quot;               SE ABRIRA FIREFOX, POR FAVOR NO LO CIERRE    *&quot;)
-        message(&quot;*************************************************************&quot;)
-        url_day&lt;-get_url()
+        #se toman los datos del archivo
+        url_day=&#39;applemobilitytrends.csv&#39;
       }
+      
 
       message(url_day)
       read.csv(url_day, sep = &quot;,&quot;, header = T)
