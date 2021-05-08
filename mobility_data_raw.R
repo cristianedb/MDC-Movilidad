@@ -6,17 +6,39 @@
 #       Gabriel Guiño
 #       Guillermo Millich
 #       Nicolas Gentile
-######################################################
+################################################################################
 
 get_mobility_data <- function(type='dynamic',reintento=0) {
+  # Esta funcion tiene la posibilidad de ejecutarla de manera manual o dinamica
+  # Es decir, dinamica significa que accede a la url  y manual que directamente
+  # utiliza el archivo ya bajado en la carpeta raiz
+  
+  # Consideraciones de la opción dinámica
+  #
+  # El link va cambiando distintos lugares
+  #
+  # https://covid19-static.cdn-apple.com/covid19-mobility-data/2107 <- aca cambia poco
+  # HotfixDev14 <- acá cambia casi todos los dias
+  # /v3/en-us/applemobilitytrends-2021-05-06.csv <- acá cambia todos los dias 
+  #                                                 pero se puede sacar con la fecha
+  #
+  # Para resolver esto de manera automatica el nombre del archivo se obtiene
+  # con los valores de la fecha y el numero al que sigue HotfixDev se obtiene 
+  # reintentado varias veces.
+  # Si luego de varios reintentos (en este caso 20) no se encuentra el link se 
+  # procede a realizar un scraping dinamico de la pagina
+  
   out <- tryCatch(
-    { REINTENTOS_MAX=10
+    { 
+      # Maxima cantidad de reintentos de versiones que tomará antes de pasar a un websraping
+      REINTENTOS_MAX=20
+    
       if(type=='dynamic'){
         # Se toman los datos de la red
         if(reintento<REINTENTOS_MAX){
           # Reintenta varias veces probando una version diferente en el caso 
           # de no encontrarla en los primeros 10 intentos utiliza otro metodo
-          last_version=9+reintento
+          last_version=14+reintento
           url_base=paste('https://covid19-static.cdn-apple.com/covid19-mobility-data/2107HotfixDev',last_version,'/v3/en-us/applemobilitytrends-', sep = "")
           yesterday<-Sys.Date()-2 # Este se fija si es el dia anterior
           url_day<-paste(url_base,yesterday,'.csv',sep="")
@@ -38,8 +60,6 @@ get_mobility_data <- function(type='dynamic',reintento=0) {
         #se toman los datos del archivo
         url_day='applemobilitytrends.csv'
       }
-      
-
 
       message(url_day)
       read.csv(url_day, sep = ",", header = T)
@@ -51,11 +71,10 @@ get_mobility_data <- function(type='dynamic',reintento=0) {
     },
     warning=function(cond) {
       message("Warning")
-      message(cond)
       if(reintento<REINTENTOS_MAX) {
         reintento=reintento+1
-        message(paste("VERSION DE LA MUESTRA DESACTUALIZADA ",last_version))
-        get_mobility_data(reintento)
+        message(paste("VERSION DE LA MUESTRA DESACTUALIZADA ",last_version+1))
+        get_mobility_data('dynamic',reintento)
       }
       else{
         return(NULL)
@@ -65,9 +84,10 @@ get_mobility_data <- function(type='dynamic',reintento=0) {
   return(out)
 }
 
-#########################################################################
-# DEBIDO A QUE ESTA FUNCION DEMORA UN TIEMPO PARA ENCONTRAR LA URL PRIMERO
-# INTENTA CON VALORES ESTATICOS Y DIFERENTES VERSIONES
+################################################################################
+# Esta función genera un webscraping de la pagina para encontrar el link. Debido
+# a que la pagina de apple tiene un renderizado dinamico, es decir el html camia
+# cuando se carga la pagina, se utiliza Selenium para R
 
 get_url <- function(reintento=0) {
   library(RSelenium)

@@ -8,9 +8,14 @@
 #       Gabriel Guiño
 #       Guillermo Millich
 #       Nicolas Gentile
-######################################################
+################################################################################
+
+
 
 get_covid_death_per_day <- function() {
+  # Se decidió buscar otro link dado a que el utilizado en la practica no 
+  # contenia datos de muertes para buenos aires
+  
   URL <- "https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/reporte-covid/"
   url_archivo  <- paste(URL,"dataset_reporte_covid_sitio_gobierno.csv", sep = "")
 

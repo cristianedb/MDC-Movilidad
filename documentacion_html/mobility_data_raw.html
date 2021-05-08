@@ -11,7 +11,7 @@
 
 <meta name="author" content="u500246" />
 
-<meta name="date" content="2021-05-06" />
+<meta name="date" content="2021-05-08" />
 
 <title>mobility_data_raw.R</title>
 
@@ -167,7 +167,7 @@ pre code {
 
 <h1 class="title toc-ignore">mobility_data_raw.R</h1>
 <h4 class="author">u500246</h4>
-<h4 class="date">2021-05-06</h4>
+<h4 class="date">2021-05-08</h4>
 
 </div>
 
@@ -180,17 +180,39 @@ pre code {
 #       Gabriel Guiño
 #       Guillermo Millich
 #       Nicolas Gentile
-######################################################
+################################################################################
 
 get_mobility_data &lt;- function(type=&#39;dynamic&#39;,reintento=0) {
+  # Esta funcion tiene la posibilidad de ejecutarla de manera manual o dinamica
+  # Es decir, dinamica significa que accede a la url  y manual que directamente
+  # utiliza el archivo ya bajado en la carpeta raiz
+  
+  # Consideraciones de la opción dinámica
+  #
+  # El link va cambiando distintos lugares
+  #
+  # https://covid19-static.cdn-apple.com/covid19-mobility-data/2107 &lt;- aca cambia poco
+  # HotfixDev14 &lt;- acá cambia casi todos los dias
+  # /v3/en-us/applemobilitytrends-2021-05-06.csv &lt;- acá cambia todos los dias 
+  #                                                 pero se puede sacar con la fecha
+  #
+  # Para resolver esto de manera automatica el nombre del archivo se obtiene
+  # con los valores de la fecha y el numero al que sigue HotfixDev se obtiene 
+  # reintentado varias veces.
+  # Si luego de varios reintentos (en este caso 20) no se encuentra el link se 
+  # procede a realizar un scraping dinamico de la pagina
+  
   out &lt;- tryCatch(
-    { REINTENTOS_MAX=10
+    { 
+      # Maxima cantidad de reintentos de versiones que tomará antes de pasar a un websraping
+      REINTENTOS_MAX=20
+    
       if(type==&#39;dynamic&#39;){
         # Se toman los datos de la red
         if(reintento&lt;REINTENTOS_MAX){
           # Reintenta varias veces probando una version diferente en el caso 
           # de no encontrarla en los primeros 10 intentos utiliza otro metodo
-          last_version=9+reintento
+          last_version=14+reintento
           url_base=paste(&#39;https://covid19-static.cdn-apple.com/covid19-mobility-data/2107HotfixDev&#39;,last_version,&#39;/v3/en-us/applemobilitytrends-&#39;, sep = &quot;&quot;)
           yesterday&lt;-Sys.Date()-2 # Este se fija si es el dia anterior
           url_day&lt;-paste(url_base,yesterday,&#39;.csv&#39;,sep=&quot;&quot;)
@@ -212,7 +234,6 @@ get_mobility_data &lt;- function(type=&#39;dynamic&#39;,reintento=0) {
         #se toman los datos del archivo
         url_day=&#39;applemobilitytrends.csv&#39;
       }
-      
 
       message(url_day)
       read.csv(url_day, sep = &quot;,&quot;, header = T)
@@ -224,11 +245,10 @@ get_mobility_data &lt;- function(type=&#39;dynamic&#39;,reintento=0) {
     },
     warning=function(cond) {
       message(&quot;Warning&quot;)
-      message(cond)
       if(reintento&lt;REINTENTOS_MAX) {
         reintento=reintento+1
-        message(paste(&quot;VERSION DE LA MUESTRA DESACTUALIZADA &quot;,last_version))
-        get_mobility_data(reintento)
+        message(paste(&quot;VERSION DE LA MUESTRA DESACTUALIZADA &quot;,last_version+1))
+        get_mobility_data(&#39;dynamic&#39;,reintento)
       }
       else{
         return(NULL)
@@ -238,9 +258,10 @@ get_mobility_data &lt;- function(type=&#39;dynamic&#39;,reintento=0) {
   return(out)
 }
 
-#########################################################################
-# DEBIDO A QUE ESTA FUNCION DEMORA UN TIEMPO PARA ENCONTRAR LA URL PRIMERO
-# INTENTA CON VALORES ESTATICOS Y DIFERENTES VERSIONES
+################################################################################
+# Esta función genera un webscraping de la pagina para encontrar el link. Debido
+# a que la pagina de apple tiene un renderizado dinamico, es decir el html camia
+# cuando se carga la pagina, se utiliza Selenium para R
 
 get_url &lt;- function(reintento=0) {
   library(RSelenium)
