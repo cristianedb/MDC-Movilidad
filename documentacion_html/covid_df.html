@@ -11,7 +11,7 @@
 
 <meta name="author" content="u500246" />
 
-<meta name="date" content="2021-05-06" />
+<meta name="date" content="2021-05-08" />
 
 <title>covid_df.R</title>
 
@@ -167,7 +167,7 @@ pre code {
 
 <h1 class="title toc-ignore">covid_df.R</h1>
 <h4 class="author">u500246</h4>
-<h4 class="date">2021-05-06</h4>
+<h4 class="date">2021-05-08</h4>
 
 </div>
 
@@ -182,9 +182,14 @@ pre code {
 #       Gabriel Guiño
 #       Guillermo Millich
 #       Nicolas Gentile
-######################################################
+################################################################################
+
+
 
 get_covid_death_per_day &lt;- function() {
+  # Se decidió buscar otro link dado a que el utilizado en la practica no 
+  # contenia datos de muertes para buenos aires
+  
   URL &lt;- &quot;https://cdn.buenosaires.gob.ar/datosabiertos/datasets/salud/reporte-covid/&quot;
   url_archivo  &lt;- paste(URL,&quot;dataset_reporte_covid_sitio_gobierno.csv&quot;, sep = &quot;&quot;)
 
@@ -194,9 +199,11 @@ get_covid_death_per_day &lt;- function() {
   
   #Se exploran columnas
   #colnames(COVID_19)
-
+  
   #se observa los datos en las columnas de interes
-  # levels(COVID_19$SUBTIPO_DATO)}
+  COVID_19$SUBTIPO_DATO &lt;- as.factor(COVID_19$SUBTIPO_DATO)
+  #levels(COVID_19$SUBTIPO_DATO)  # Se la comenta, linea solo exploratorea
+  
   # [57] &quot;fallecidos_acumulados&quot;                                      
   # [58] &quot;fallecidos_reportados_del_dia&quot;  
   
@@ -204,12 +211,44 @@ get_covid_death_per_day &lt;- function() {
   # COL A BORRAR: &quot;FECHA_PROCESO&quot;,&quot;ID_CARGA&quot;,&quot;TIPO_REPORTE&quot;
   library(&quot;dplyr&quot;)
   
+  # Se elige el SUBTIPO_DATO=&quot;fallecidos_reportados_del_dia&quot;  
   COVID_19&lt;-filter(COVID_19, SUBTIPO_DATO==&quot;fallecidos_reportados_del_dia&quot;)
-  levels(COVID_19$TIPO_DATO)
+  
+  #Se analiza la columna TIPO_DATO
+  COVID_19$TIPO_DATO &lt;- as.factor(COVID_19$TIPO_DATO)
+  #levels(COVID_19$TIPO_DATO)  # Se la comenta, linea solo exploratorea
+  
+  # [1] &quot;barrios_vulnerables&quot;                                                             
+  # [2] &quot;casos_no_residentes&quot;                                                             
+  # [3] &quot;casos_por_grupo_etario&quot;                                                          
+  # [4] &quot;casos_residentes&quot;                                                                
+  # [5] &quot;ocupacion_de_camas_sistema_publico&quot;                                              
+  # [6] &quot;personas_hisopadas&quot;                                                              
+  # [7] &quot;plan_detectar_bv&quot;                                                                
+  # [8] &quot;plan_detectar_movil&quot;                                                             
+  # [9] &quot;plan_detectar_total_barrios_vulnerables_detectar_movil&quot;                          
+  # [10] &quot;total_de_camas_sistema_publico&quot;                                                  
+  # [11] &quot;tr_en_centros_de_salud_hospitales_cesacs_cemar_e_irep&quot;                           
+  # [12] &quot;tr_en_fuerzas_de_seguridad_insituto_de_cadetes_transporte_y_carga_manual_policia&quot;
+  # [13] &quot;tr_en_geriatricos&quot;  
+  
+  # COVID_19 %&gt;% group_by(TIPO_DATO) %&gt;% summarise(VALOR = sum(VALOR)) # Se la comenta, linea solo exploratorea
+  
+  # TIPO_DATO           VALOR
+  # &lt;fct&gt;               &lt;dbl&gt;
+  #   1 barrios_vulnerables   229
+  # 2 casos_no_residentes  2863
+  # 3 casos_residentes     7809
+  
+  # Los tipos de datos que quedan con valores luego del filtrado de subtipo de 
+  # datos es una clasificación por tipo de barrios. Por lo tanto para sacar
+  # el total de Buenos Aires se tomará la suma de todos ellos
   
   #Selecciona las columnas a trabajar
   COVID_19 &lt;-select(COVID_19,FECHA,VALOR )
   colnames(COVID_19) &lt;- c(&quot;FECHA&quot;, &quot;MUERTES_POR_DIA&quot;)
+  
+  
   COVID_19&lt;- COVID_19 %&gt;% group_by(FECHA) %&gt;% summarise(MUERTES_POR_DIA = sum(MUERTES_POR_DIA))
   COVID_19$FECHA &lt;- as.Date(COVID_19$FECHA, format = &quot;%d.%m.%Y&quot;)
 

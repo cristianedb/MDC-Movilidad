@@ -15,6 +15,18 @@ library(patchwork)
 library(plotly)
 
 graficar <- function(final){
+  
+  DNU=as.Date('2021-04-15')
+  
+  vline <- list(
+      type = "line", 
+      y0 = 0, 
+      y1 = 1, 
+      yref = "paper",
+      x0 = DNU, 
+      x1 = DNU, 
+      line = list(color = "black",dash='dash',name='DNU')
+    )
   ay <- list(
     side = "left",
     title = "Movilidad",
@@ -39,7 +51,8 @@ graficar <- function(final){
     yaxis = ay,
     xaxis = ax,
     legend = list(x = 0, y = 1),
-    margin = list(l = 50, r = 50, b = 50, t = 50, pad = 4)
+    margin = list(l = 50, r = 50, b = 50, t = 50, pad = 4),
+    shapes = vline
   )
   fig 
 }
