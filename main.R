@@ -32,12 +32,16 @@ final<- merge(movilidad, COVID_19)
 # Grafica las muertes vs la movilidad
 source("grafica.R")
 graficar(final)
-# si bien se observa que la movilidad empezó a disminuir cuando los muertos se
-# empezaron a elevar esto pudo haber sido porqu la misma gente empezó a cuidarse 
-# mas (en general)
-# Luego con el DNU ayudó un poco mas a la disminución de la movilidad 
-# las muertes siguen creciendo unos días mas
 
+# Se observa una reducción desde el principio de Abril donde coincide con los
+# siguientes hitos:
+# 
+# 1/4 al 4/4 Semana Santa (caja roja)
+# 8/4: Decreto de reducción de movilidad hasta las 23hs (linea punteada)
+# 15/4: DNU de reduccion de movilidad 20hs y clases virtuales, etc (linea punteada)
+
+# Dado a la inrcia del sistema las muertes siguieron aumentando, por tal razon 
+# se realizará otra gráfica con las muertes retrasada 15 días.
 
 #Se genera una funcion que genere un retraso en la serie
 lag_serie <-function(serie,lag){ 
@@ -55,5 +59,10 @@ lag=15
 final$MUERTES_POR_DIA=lag_serie(final$MUERTES_POR_DIA,15)
 graficar(final)
 
-# Se observa que la cantidad de muertes (desfasada 15 días) empieza a disminuir 
-# con el DNU
+# Para confirmar un quiebre de tendencia se deberá recabar información de los 
+# días subsiguientes a fin de poder minimizar erroes de diagnostico. 
+#A priori, se visualiza una disminucion signifiativa en la muertes
+# por día.
+
+
+

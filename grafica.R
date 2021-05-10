@@ -16,17 +16,43 @@ library(plotly)
 
 graficar <- function(final){
   
+  MEDIDAS_PREV=as.Date('2021-04-08')
   DNU=as.Date('2021-04-15')
+  SEMANA_SANTA_INICIO=as.Date('2021-04-01')
+  SEMANA_SANTA_FIN=as.Date('2021-04-04')
   
-  vline <- list(
-      type = "line", 
-      y0 = 0, 
-      y1 = 1, 
-      yref = "paper",
-      x0 = DNU, 
-      x1 = DNU, 
-      line = list(color = "black",dash='dash',name='DNU')
+  xbox <- list(
+    type = "rect",
+    fillcolor = "red",
+    line = list(color = "red"),
+    opacity = 0.5,
+    x0 = SEMANA_SANTA_INICIO,
+    x1 = SEMANA_SANTA_FIN,
+    xref = "x",
+    y0 = 0,
+    y1 = 1, 
+    yref = "paper"
     )
+  vline <- list(
+    type = "line", 
+    y0 = 0, 
+    y1 = 1, 
+    yref = "paper",
+    x0 = DNU, 
+    x1 = DNU,
+    name='DNU',
+    line = list(color = "black",dash='dash')
+  )
+  vline2 <- list(
+    type = "line", 
+    y0 = 0, 
+    y1 = 1, 
+    yref = "paper",
+    x0 = MEDIDAS_PREV, 
+    x1 = MEDIDAS_PREV, 
+    name='MEDIDAS',
+    line = list(color = "black",dash='dash')
+  )
   ay <- list(
     side = "left",
     title = "Movilidad",
@@ -52,7 +78,7 @@ graficar <- function(final){
     xaxis = ax,
     legend = list(x = 0, y = 1),
     margin = list(l = 50, r = 50, b = 50, t = 50, pad = 4),
-    shapes = vline
+    shapes = list(vline,vline2,xbox)
   )
   fig 
 }
