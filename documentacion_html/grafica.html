@@ -11,7 +11,7 @@
 
 <meta name="author" content="u500246" />
 
-<meta name="date" content="2021-05-06" />
+<meta name="date" content="2021-05-10" />
 
 <title>grafica.R</title>
 
@@ -167,7 +167,7 @@ pre code {
 
 <h1 class="title toc-ignore">grafica.R</h1>
 <h4 class="author">u500246</h4>
-<h4 class="date">2021-05-06</h4>
+<h4 class="date">2021-05-10</h4>
 
 </div>
 
@@ -202,6 +202,44 @@ library(ggplot2)</code></pre>
 ## 
 ##     layout</code></pre>
 <pre class="r"><code>graficar &lt;- function(final){
+  
+  MEDIDAS_PREV=as.Date(&#39;2021-04-08&#39;)
+  DNU=as.Date(&#39;2021-04-15&#39;)
+  SEMANA_SANTA_INICIO=as.Date(&#39;2021-04-01&#39;)
+  SEMANA_SANTA_FIN=as.Date(&#39;2021-04-04&#39;)
+  
+  xbox &lt;- list(
+    type = &quot;rect&quot;,
+    fillcolor = &quot;red&quot;,
+    line = list(color = &quot;red&quot;),
+    opacity = 0.5,
+    x0 = SEMANA_SANTA_INICIO,
+    x1 = SEMANA_SANTA_FIN,
+    xref = &quot;x&quot;,
+    y0 = 0,
+    y1 = 1, 
+    yref = &quot;paper&quot;
+    )
+  vline &lt;- list(
+    type = &quot;line&quot;, 
+    y0 = 0, 
+    y1 = 1, 
+    yref = &quot;paper&quot;,
+    x0 = DNU, 
+    x1 = DNU,
+    name=&#39;DNU&#39;,
+    line = list(color = &quot;black&quot;,dash=&#39;dash&#39;)
+  )
+  vline2 &lt;- list(
+    type = &quot;line&quot;, 
+    y0 = 0, 
+    y1 = 1, 
+    yref = &quot;paper&quot;,
+    x0 = MEDIDAS_PREV, 
+    x1 = MEDIDAS_PREV, 
+    name=&#39;MEDIDAS&#39;,
+    line = list(color = &quot;black&quot;,dash=&#39;dash&#39;)
+  )
   ay &lt;- list(
     side = &quot;left&quot;,
     title = &quot;Movilidad&quot;,
@@ -226,7 +264,8 @@ library(ggplot2)</code></pre>
     yaxis = ay,
     xaxis = ax,
     legend = list(x = 0, y = 1),
-    margin = list(l = 50, r = 50, b = 50, t = 50, pad = 4)
+    margin = list(l = 50, r = 50, b = 50, t = 50, pad = 4),
+    shapes = list(vline,vline2,xbox)
   )
   fig 
 }</code></pre>
